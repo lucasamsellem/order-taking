@@ -12,7 +12,7 @@ FONT SIZE SYSTEM (px)
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 html {
   font-size: 62.5%;
@@ -56,20 +56,29 @@ body {
 }
 
 .header-left-side {
-  gap: 4.8rem;
+  gap: 2rem;
 }
 
 h1 {
   font-size: 2.4rem;
 }
+h4 {
+  font-weight: 400;
+  font-size: 2.4rem;
+}
+h5 {
+  font-weight: 300;
+  font-size: 1.6rem;
+}
 
 .logo {
-  height: 3.6rem;
+  height: 3rem;
 }
 
 a:link,
 a:visited {
   color: var(--body-font);
+  text-decoration: none;
 }
 
 ul li {
@@ -84,7 +93,7 @@ ul li {
 }
 
 .nav-list a {
-  padding: 0.3em 1em;
+  padding: 0.3em 0.8em;
   border-radius: 5px;
 
   text-decoration: none;
@@ -110,7 +119,7 @@ ul li {
   font-weight: 600;
 
   background-color: var(--background-beige);
-  box-shadow: 0 0 15px rgba(54, 54, 54, 0.044);
+  box-shadow: 0 0 1px rgba(54, 54, 54, 0.25);
 
   transition: opacity 0.2s ease-in-out;
 }
@@ -120,12 +129,24 @@ ul li {
   font-size: 1.6rem;
   background-color: #fab005;
   color: white;
-  font-weight: 600;
   border: none;
-  padding: 0.6em 1em;
+  padding: 0.3em;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.order-btn {
+  margin-right: 0.8rem;
+  transition: all 0.2s;
+}
+.order-btn ion-icon {
+  font-size: 2.6rem;
+}
+
+.order-btn:hover,
+.finalize-btn:hover {
+  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.088);
 }
 
 .bag-btn {
@@ -133,7 +154,6 @@ ul li {
   border: none;
   background-color: transparent;
   margin-left: 4.8rem;
-
   cursor: pointer;
 
   transition: color 0.2s ease-in-out;
@@ -217,22 +237,11 @@ h3 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  margin-left: 30%;
+  /* margin-left: 30%; */
   margin-top: auto;
 }
 
-.order-btn {
-  margin-right: 0.8rem;
-  transition: all 0.2s;
-}
-.order-btn:hover,
-.finalize-btn:hover {
-  box-shadow: inset 0 0 0 1.5px rgba(0, 0, 0, 0.088);
-}
-
 .product-quantity-input {
-  /* position: absolute; */
-
   font-size: 1.6rem;
   width: 5.8rem;
   right: 7.6rem;
@@ -240,6 +249,7 @@ h3 {
   border: none;
   padding: 10px 10px;
   border-radius: 5px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.243);
 
   transition: opacity 0.2s ease-in-out;
 }
@@ -248,15 +258,15 @@ h3 {
   outline: solid 2px var(--background-yellow);
 }
 
-.data-product li {
+.product-item {
   display: grid;
   grid-template-columns: auto auto 1fr auto;
+  align-items: center;
   gap: 2rem;
   margin-bottom: 2.4rem;
 }
 
 .delete-item {
-  /* display: inline-block; */
   font-size: 1.6rem;
   border: none;
   border-radius: 5px;
@@ -276,6 +286,7 @@ h3 {
   translate: -50% -50%;
   border: none;
   border-radius: 5px;
+  scrollbar-width: thin;
 
   width: 80vw;
 
@@ -289,18 +300,17 @@ h3 {
 }
 
 .close-modal-btn {
-  font-size: 3rem;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-
+  font-size: 2.4rem;
+  padding: 0.2em 0 0 0.2em;
   cursor: pointer;
 }
 
 .modal-content {
-  padding: 2em;
+  padding: 0 0 2em 2em;
   font-size: 2rem;
   border-radius: 5px;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .recipe-container {
@@ -317,6 +327,10 @@ h3 {
   justify-items: center;
   gap: 4.8rem;
   max-width: 18rem;
+}
+
+.ingredient-container:last-child {
+  padding-right: 2em;
 }
 
 .ingredient-img {
@@ -339,11 +353,7 @@ h3 {
   justify-content: space-between;
   align-items: center;
   gap: 5.8rem;
-  border: #2b8a3e solid 3px;
-}
-
-.receipt-total-price {
-  font-weight: 600;
+  /* border: #2b8a3e solid 3px; */
 }
 
 .credit-card {
@@ -359,11 +369,18 @@ h3 {
 
 footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+
+  font-size: 1.6rem;
   color: white;
   background-color: #333;
-  height: 10.8rem;
+  padding: 1em 0;
+}
+
+.github-link ion-icon {
+  font-size: 4.4rem;
+  color: white;
 }
 
 /* DYNAMIC */
@@ -384,4 +401,106 @@ footer {
 
 .highlighted {
   background-color: #fab005;
+}
+
+.loading-msg {
+  text-align: center;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Media query pour iPhone 13 et appareils similaires */
+@media (max-width: 800px) {
+  .wrapper {
+    padding: 0 4rem;
+  }
+  section {
+    scroll-margin-top: 8rem;
+  }
+
+  #burgers {
+    margin-top: 8rem;
+  }
+
+  .header {
+    padding: 1em 2em;
+  }
+
+  h1 {
+    display: none;
+  }
+
+  .logo {
+    height: 2.4rem;
+  }
+
+  /* .header-left-side {
+    gap: 2.4rem;
+  } */
+
+  .nav-list {
+    gap: 0;
+    margin: 0 0.5rem;
+  }
+
+  .bag-btn {
+    margin-left: 0;
+  }
+
+  .bag-icon {
+    font-size: 2.8rem;
+  }
+
+  .col-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+
+  .bag-container {
+    padding: 1.2em 0.8em;
+    top: 10%;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .product-container {
+    font-size: 2rem;
+    padding: 1.6rem;
+    gap: 2.8rem;
+  }
+
+  .product-img {
+    max-height: 14rem;
+  }
+
+  .order-container {
+    margin-top: 1rem;
+  }
+
+  .ingredient-container {
+    gap: 3.2rem;
+    max-width: 14rem;
+  }
+
+  footer {
+    /* flex-direction: column; */
+    padding: 2em;
+  }
+
+  .modal {
+    width: 90vw;
+  }
+
+  .modal-content {
+    /* font-size: 1.6rem; */
+    padding: 1.6rem;
+  }
+
+  .credit-card {
+    font-size: 3.2rem;
+    gap: 2.4rem;
+  }
 }
