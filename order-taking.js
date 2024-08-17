@@ -1,29 +1,29 @@
 // ! VARIABLES
 
-const allSections = document.querySelectorAll(".section");
+const allSections = document.querySelectorAll('.section');
 
 // MODAL
-const modal = document.querySelector(".modal");
-const modalContent = document.querySelector(".modal-content");
-const closeModalBtn = document.querySelectorAll(".close-modal-btn");
-const recipesImgs = document.querySelectorAll(".recipe-img");
-const orderReceipt = document.querySelector(".order-receipt");
-const receiptDate = document.querySelector(".receipt-date");
-const receiptTotalPrice = document.querySelector(".receipt-total-price");
-const creditCard = document.querySelector(".credit-card");
+const modal = document.querySelector('.modal');
+const modalContent = document.querySelector('.modal-content');
+const closeModalBtn = document.querySelectorAll('.close-modal-btn');
+const recipesImgs = document.querySelectorAll('.recipe-img');
+const orderReceipt = document.querySelector('.order-receipt');
+const receiptDate = document.querySelector('.receipt-date');
+const receiptTotalPrice = document.querySelector('.receipt-total-price');
+const creditCard = document.querySelector('.credit-card');
 
 // PRODUCTS
-const productImg = document.querySelectorAll(".product-img");
+const productImg = document.querySelectorAll('.product-img');
 
 // BAG
-const orderBtn = document.querySelectorAll(".order-btn");
-const bagBtn = document.querySelector(".bag-btn");
-const bagCount = document.querySelector(".bag-count");
-const bagContainer = document.querySelector(".bag-container");
-const bagContent = document.querySelector(".bag-content");
-const bagProductsList = document.querySelector(".bag-products-list");
-const bagPriceEl = document.querySelector(".bag-price");
-const finalizeBtn = document.querySelector(".finalize-btn");
+const orderBtn = document.querySelectorAll('.order-btn');
+const bagBtn = document.querySelector('.bag-btn');
+const bagCount = document.querySelector('.bag-count');
+const bagContainer = document.querySelector('.bag-container');
+const bagContent = document.querySelector('.bag-content');
+const bagProductsList = document.querySelector('.bag-products-list');
+const bagPriceEl = document.querySelector('.bag-price');
+const finalizeBtn = document.querySelector('.finalize-btn');
 
 // Dynamic variables
 let orderedProducts = {};
@@ -68,40 +68,40 @@ class ChickenBurger extends Burger {
 }
 
 const newCheeseBurger = new CheeseBurger(
-  "Sesame bread",
-  "Beef",
-  "Lettuce",
-  "Cheddar",
-  "Tomatoes",
-  "Ketchup"
+  'Sesame bread',
+  'Beef',
+  'Lettuce',
+  'Cheddar',
+  'Tomatoes',
+  'Ketchup'
 );
 
 const newVegetarianBurger = new VegetarianBurger(
-  "Wholemeal bread",
-  "Potato pancakes",
-  "Cucumbers",
-  "Lettuce",
-  "Tomatoes",
-  "Tartar"
+  'Wholemeal bread',
+  'Potato pancakes',
+  'Cucumbers',
+  'Lettuce',
+  'Tomatoes',
+  'Tartar'
 );
 
 const newChickenBurger = new ChickenBurger(
-  "Sesame bread",
-  "Chicken",
-  "Swiss cheese",
-  "Lettuce",
-  "Tomatoes",
-  "Barbecue"
+  'Sesame bread',
+  'Chicken',
+  'Swiss cheese',
+  'Lettuce',
+  'Tomatoes',
+  'Barbecue'
 );
 
 // ! DOM
 
 // Global functions
 const showEl = (el) => {
-  el.classList.remove("opacity-zero");
+  el.classList.remove('opacity-zero');
 };
 const hideEl = (el) => {
-  el.classList.add("opacity-zero");
+  el.classList.add('opacity-zero');
 };
 
 // Intersection Observer
@@ -115,8 +115,8 @@ const highlightSections = (entries) => {
 
     // highlight nav items when observing
     entry.isIntersecting
-      ? navLink.classList.add("highlighted")
-      : navLink.classList.remove("highlighted");
+      ? navLink.classList.add('highlighted')
+      : navLink.classList.remove('highlighted');
   });
 };
 
@@ -129,9 +129,9 @@ allSections.forEach((section) => sectionObserver.observe(section));
 
 // Recipes
 const burgers = {
-  "Cheese burger": newCheeseBurger,
-  "Vegetarian burger": newVegetarianBurger,
-  "Chicken burger": newChickenBurger,
+  'Cheese burger': newCheeseBurger,
+  'Vegetarian burger': newVegetarianBurger,
+  'Chicken burger': newChickenBurger,
 };
 
 const generateIngredient = (ingredient) => {
@@ -155,7 +155,7 @@ const displayRecipe = (burgerName) => {
   // Generate recipe HTML content
   const recipe = Object.keys(ingredients)
     .map((type) => generateIngredient(ingredients[type]))
-    .join("");
+    .join('');
 
   // Add recipe in modal content
   modalContent.innerHTML = `
@@ -165,8 +165,8 @@ const displayRecipe = (burgerName) => {
 
   // Hide ingredient container if isn't part of the recipe
   recipesImgs.forEach((img) => {
-    img.addEventListener("error", () => {
-      img.parentElement.style.display = "none";
+    img.addEventListener('error', () => {
+      img.parentElement.style.display = 'none';
     });
   });
 
@@ -174,14 +174,14 @@ const displayRecipe = (burgerName) => {
   modal.showModal();
 
   // Hide when clicking outside modal
-  modal.addEventListener("click", (e) => {
+  modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.close();
   });
 };
 
 // Open modal on click
 productImg.forEach((product) => {
-  product.addEventListener("click", () => {
+  product.addEventListener('click', () => {
     // Target burger name
     const burgerName = product.previousElementSibling.textContent;
 
@@ -192,7 +192,7 @@ productImg.forEach((product) => {
 
 // Close modals
 closeModalBtn.forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener('click', () => {
     modal.close();
     orderReceipt.close();
   });
@@ -209,7 +209,7 @@ const updateBag = (quantity, name, price) => {
 
   // Insert div for each ordered product
   bagProductsList.insertAdjacentHTML(
-    "beforeend",
+    'beforeend',
     `<li class="product-item" data-product-name="${name}">
       <button class="delete-item">-</button>
       <span class="product-quantity dimmed-color">${quantity}x</span> 
@@ -219,12 +219,12 @@ const updateBag = (quantity, name, price) => {
   );
 };
 
-const updateBagPrice = (price, operation = "increment") => {
-  operation === "increment" ? (bagPrice += price) : (bagPrice -= price);
+const updateBagPrice = (price, operation = 'increment') => {
+  operation === 'increment' ? (bagPrice += price) : (bagPrice -= price);
   bagPriceEl.textContent = `${formatPrice(bagPrice)}€`;
 };
-const updateBagCount = (quantity, operation = "increment") => {
-  operation === "increment"
+const updateBagCount = (quantity, operation = 'increment') => {
+  operation === 'increment'
     ? (totalItems += quantity)
     : (totalItems -= quantity);
   bagCount.textContent = totalItems;
@@ -232,7 +232,7 @@ const updateBagCount = (quantity, operation = "increment") => {
 
 // Order btn
 orderBtn.forEach((btn) => {
-  btn.addEventListener("mouseover", () => {
+  btn.addEventListener('mouseover', () => {
     // Target quantity input
     const inputQuantity = btn.nextElementSibling;
 
@@ -240,19 +240,19 @@ orderBtn.forEach((btn) => {
     showEl(inputQuantity);
 
     // Hide again when hover outside parent container
-    btn.closest(".product-container").addEventListener("mouseleave", () => {
+    btn.closest('.product-container').addEventListener('mouseleave', () => {
       hideEl(inputQuantity);
     });
   });
 
   // Handle order button click
-  btn.addEventListener("click", (e) => {
+  btn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    const container = btn.closest(".product-container");
-    const name = container.querySelector(".product-name").textContent;
-    const price = container.querySelector(".price").textContent;
-    const input = container.querySelector(".product-quantity-input");
+    const container = btn.closest('.product-container');
+    const name = container.querySelector('.product-name').textContent;
+    const price = container.querySelector('.price').textContent;
+    const input = container.querySelector('.product-quantity-input');
     const quantity = +input.value;
     const totalProductPrice = +price * quantity;
 
@@ -262,14 +262,14 @@ orderBtn.forEach((btn) => {
       showEl(bagCount);
 
       // Increment bag count
-      updateBagCount(quantity, "increment");
+      updateBagCount(quantity, 'increment');
 
       // Highlight bag btn when ordering
-      if (bagCount.textContent > 0) bagBtn.classList.add("focus");
+      if (bagCount.textContent > 0) bagBtn.classList.add('focus');
 
       // Update bag content && bag price
       updateBag(quantity, name, totalProductPrice);
-      updateBagPrice(totalProductPrice, "increment");
+      updateBagPrice(totalProductPrice, 'increment');
 
       // Delete items //////////////////////////////////
       const deleteBtn = bagContent.querySelector(
@@ -277,52 +277,52 @@ orderBtn.forEach((btn) => {
       );
 
       // Delete product item on click
-      deleteBtn.addEventListener("click", () => {
+      deleteBtn.addEventListener('click', () => {
         // Remove product && bag price
-        deleteBtn.closest(".product-item").remove();
-        updateBagPrice(totalProductPrice, "decrement");
+        deleteBtn.closest('.product-item').remove();
+        updateBagPrice(totalProductPrice, 'decrement');
 
         // Decrement bag count in DOM
-        updateBagCount(quantity, "decrement");
+        updateBagCount(quantity, 'decrement');
 
         // Hide bag when empty
         if (bagCount.textContent == 0) {
-          bagBtn.classList.remove("focus");
+          bagBtn.classList.remove('focus');
           hideEl(bagCount);
           hideEl(bagContainer);
         }
       });
 
       // Reset the input value
-      input.value = "";
+      input.value = '';
     } else {
-      alert("Please enter a valid quantity");
+      alert('Please enter a valid quantity');
     }
   });
 });
 
 // Hide bag btn on click
-bagBtn.addEventListener("click", () => {
-  bagContainer.classList.toggle("opacity-zero");
+bagBtn.addEventListener('click', () => {
+  bagCount.textContent > 0 && bagContainer.classList.toggle('opacity-zero');
 });
 
 // Display order receipt
-finalizeBtn.addEventListener("click", async () => {
+finalizeBtn.addEventListener('click', async () => {
   try {
     // Get today's date
     const now = new Date();
     const date = now.toLocaleDateString();
-    const time = now.toLocaleTimeString("default", {
-      hour: "2-digit",
-      minute: "2-digit",
+    const time = now.toLocaleTimeString('default', {
+      hour: '2-digit',
+      minute: '2-digit',
     });
 
     // Get location async
     const city = await whereAmI();
 
     // Display order recept
-    receiptDate.innerHTML = `✔️ Order placed on: ${date} at ${time} in ${city}`;
-    receiptTotalPrice.innerHTML = `Total: ${bagPriceEl.textContent}`;
+    receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong> in <strong>${city}</strong>`;
+    receiptTotalPrice.innerHTML = `Total: <strong>${bagPriceEl.textContent}</strong>`;
 
     creditCard.innerHTML = `
     <ion-icon name="card-outline"></ion-icon>
@@ -352,13 +352,48 @@ const getPosition = () => {
 };
 
 const whereAmI = async () => {
-  const position = await getPosition();
-  const { latitude, longitude } = position.coords;
+  let loading = true;
+  const loadingMsg = document.createElement('p');
+  loadingMsg.className = 'loading-msg';
 
-  const response = await fetch(
-    `https://reversegeo.com/locate/${latitude}/${longitude}`
-  );
-  const data = await response.json();
+  const displayLoadingMsg = () => {
+    if (loading) {
+      loadingMsg.textContent = 'Retrieving your position...';
+      bagContainer.appendChild(loadingMsg); // Append it to the container
+    } else {
+      loadingMsg.style.display = 'none';
+    }
+  };
+  displayLoadingMsg();
 
-  return data.city;
+  try {
+    const position = await getPosition();
+    const { latitude, longitude } = position.coords;
+
+    console.log(latitude, longitude);
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-rapidapi-key': '55a99a5ab8mshb3b90b4bffb78c7p1e6180jsnb6f1a2dc3643',
+        'x-rapidapi-host': 'trueway-geocoding.p.rapidapi.com',
+      },
+    };
+
+    const response = await fetch(
+      `https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=${latitude}%2C-${longitude}&language=en`,
+      options
+    );
+    const data = await response.json();
+    console.log(data.results);
+
+    loading = false;
+    displayLoadingMsg();
+
+    return data.results[0].country;
+  } catch (error) {
+    console.error('Error retrieving position or geocoding:', error);
+    loadingMsg.textContent = 'Failed to retrieve position.';
+    loadingMsg.style.backgroundColor = 'red';
+  }
 };
