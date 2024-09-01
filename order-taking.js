@@ -25,11 +25,16 @@ const bagContent = document.querySelector('.bag-content');
 const bagProductsList = document.querySelector('.bag-products-list');
 const bagPriceEl = document.querySelector('.bag-price');
 const finalizeBtn = document.querySelector('.finalize-btn');
+const loadingMsg = document.createElement('p');
+loadingMsg.className = 'loading-msg';
+const errorMsg = document.createElement('p');
+errorMsg.className = 'error-msg';
 
 // Dynamic variables
 let orderedProducts = {};
 let totalItems = 0;
 let bagPrice = 0;
+let loading;
 
 // ! CLASS BURGER
 class Burger {
@@ -105,11 +110,19 @@ const hideEl = (el) => {
   el.classList.add('opacity-zero');
 };
 
-function createErrorMsg(text, container) {
-  const errorMsg = document.createElement('p');
-  errorMsg.textContent = text;
-  container.appendChild(errorMsg);
+function displayLoadingMsg() {
+  if (loading) {
+    loadingMsg.style.display = 'block';
+    loadingMsg.textContent = 'Retrieving your position...';
+    bagContainer.appendChild(loadingMsg);
+  } else {
+    loadingMsg.style.display = 'none';
+  }
 }
+
+// Round price to 2 decimals if floating number
+const formatPrice = (price) =>
+  !Number.isInteger(price) ? price.toFixed(2) : price;
 
 // Intersection Observer
 const highlightSections = (entries) => {
@@ -199,9 +212,6 @@ closeModalBtn.forEach((btn) => {
 });
 
 // ! BAG INTERACTION
-// Round price to 2 decimals if floating number
-const formatPrice = (price) =>
-  !Number.isInteger(price) ? price.toFixed(2) : price;
 
 // Update bag function
 const updateBag = (quantity, name, price) => {
@@ -293,8 +303,10 @@ bagBtn.addEventListener('click', () => {
 
 // Display order receipt
 finalizeBtn.addEventListener('click', async () => {
+  // Reitinialize errorMsg
+  errorMsg.textContent === '';
+
   try {
-    // Get today's date
     const now = new Date();
     const date = now.toLocaleDateString();
     const time = now.toLocaleTimeString('default', {
@@ -309,8 +321,9 @@ finalizeBtn.addEventListener('click', async () => {
     if (!city) {
       receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong>`;
 
-      // Create error position msg
-      createErrorMsg('⚠️ Failed to retrieve your location', receiptContainer);
+      // Display error position msg
+      errorMsg.textContent = '⚠️ Failed to retrieve your location';
+      receiptContainer.appendChild(errorMsg);
     } else {
       receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong> in <strong>${city}</strong>`;
     }
@@ -319,7 +332,7 @@ finalizeBtn.addEventListener('click', async () => {
 
     creditCard.innerHTML = `
     <ion-icon name="card-outline"></ion-icon>
-    <ion-icon name="logo-paypal"/></ion-icon>
+    <ion-icon name="logo-paypal"></ion-icon>
     <ion-icon name="id-card-outline"></ion-icon>
    `;
 
@@ -345,19 +358,7 @@ function getPosition() {
 }
 
 const whereAmI = async () => {
-  // Create loading msg
-  let loading = true;
-  const loadingMsg = document.createElement('p');
-  loadingMsg.className = 'loading-msg';
-
-  function displayLoadingMsg() {
-    if (loading) {
-      loadingMsg.textContent = 'Retrieving your position...';
-      bagContainer.appendChild(loadingMsg);
-    } else {
-      loadingMsg.style.display = 'none';
-    }
-  }
+  loading = true;
   displayLoadingMsg();
 
   try {
@@ -378,12 +379,13 @@ const whereAmI = async () => {
     );
 
     const data = await response.json();
-
-    loading = false;
-    displayLoadingMsg();
+    // console.log(data);
 
     return data.results[0].country;
   } catch (error) {
     console.log(error);
+  } finally {
+    loading = false;
+    displayLoadingMsg();
   }
 };
