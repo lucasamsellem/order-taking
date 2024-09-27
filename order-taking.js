@@ -11,10 +11,7 @@ const receiptDate = document.querySelector('.receipt-date');
 const receiptTotalPrice = document.querySelector('.receipt-total-price');
 const creditCard = document.querySelector('.credit-card');
 
-// PRODUCTS
 const productImg = document.querySelectorAll('.product-img');
-
-// BAG
 const orderBtn = document.querySelectorAll('.order-btn');
 const bagBtn = document.querySelector('.bag-btn');
 const bagCount = document.querySelector('.bag-count');
@@ -198,7 +195,6 @@ const displayRecipe = (burgerName) => {
   const recipe = Object.values(ingredients).map(generateIngredient).join('');
 
   modalContent.innerHTML = `
-    <h3 class="product-name">${burgerName} 🍔</h3>
     <ul class="recipe-container">${recipe}</ul>
   `;
 
