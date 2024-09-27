@@ -1,12 +1,10 @@
 // ! VARIABLES
-
 const allSections = document.querySelectorAll('.section');
 
 // MODAL
 const modal = document.querySelector('.modal');
 const modalContent = document.querySelector('.modal-content');
 const closeModalBtn = document.querySelectorAll('.close-modal-btn');
-const recipesImgs = document.querySelectorAll('.recipe-img');
 const orderReceipt = document.querySelector('.order-receipt');
 const receiptContainer = document.querySelector('.receipt-content');
 const receiptDate = document.querySelector('.receipt-date');
@@ -23,18 +21,19 @@ const bagCount = document.querySelector('.bag-count');
 const bagContainer = document.querySelector('.bag-container');
 const bagContent = document.querySelector('.bag-content');
 const bagProductsList = document.querySelector('.bag-products-list');
-const bagPriceEl = document.querySelector('.bag-price');
+const bagPrice = document.querySelector('.bag-price');
 const finalizeBtn = document.querySelector('.finalize-btn');
-const loadingMsg = document.createElement('p');
-loadingMsg.className = 'loading-msg';
-const errorMsg = document.createElement('p');
-errorMsg.className = 'error-msg';
+const now = new Date();
+const date = now.toLocaleDateString();
+const time = now.toLocaleTimeString('default', {
+  hour: '2-digit',
+  minute: '2-digit',
+});
 
-// Dynamic variables
 let orderedProducts = {};
 let totalItems = 0;
-let bagPrice = 0;
-let loading;
+let bagPriceValue = Number(bagPrice.textContent);
+let bagCountValue = Number(bagCount.textContent);
 
 // ! CLASS BURGER
 class Burger {
@@ -73,151 +72,66 @@ class ChickenBurger extends Burger {
   }
 }
 
-const newCheeseBurger = new CheeseBurger(
-  'Sesame bread',
-  'Beef',
-  'Lettuce',
-  'Cheddar',
-  'Tomatoes',
-  'Ketchup'
-);
-
-const newVegetarianBurger = new VegetarianBurger(
-  'Wholemeal bread',
-  'Potato pancakes',
-  'Cucumbers',
-  'Lettuce',
-  'Tomatoes',
-  'Tartar'
-);
-
-const newChickenBurger = new ChickenBurger(
-  'Sesame bread',
-  'Chicken',
-  'Swiss cheese',
-  'Lettuce',
-  'Tomatoes',
-  'Barbecue'
-);
-
-// ! DOM
-
-// Helper functions
-const showEl = (el) => {
-  el.classList.remove('opacity-zero');
-};
-const hideEl = (el) => {
-  el.classList.add('opacity-zero');
+const burgers = {
+  'Cheese burger': new CheeseBurger(
+    'Sesame bread',
+    'Beef',
+    'Lettuce',
+    'Cheddar',
+    'Tomatoes',
+    'Ketchup'
+  ),
+  'Vegetarian burger': new VegetarianBurger(
+    'Wholemeal bread',
+    'Potato pancakes',
+    'Cucumbers',
+    'Lettuce',
+    'Tomatoes',
+    'Tartar'
+  ),
+  'Chicken burger': new ChickenBurger(
+    'Sesame bread',
+    'Chicken',
+    'Swiss cheese',
+    'Lettuce',
+    'Tomatoes',
+    'Barbecue'
+  ),
 };
 
-function displayLoadingMsg() {
-  if (loading) {
-    loadingMsg.style.display = 'block';
-    loadingMsg.textContent = 'Retrieving your position...';
-    bagContainer.appendChild(loadingMsg);
-  } else {
-    loadingMsg.style.display = 'none';
-  }
-}
+// ! HELPER FUNCTIONS
+const showEl = (el) => el.classList.remove('opacity-zero');
+const hideEl = (el) => el.classList.add('opacity-zero');
+
+const createErrorMsg = (text, container) => {
+  const errorMsg = document.createElement('p');
+  errorMsg.textContent = text;
+  container.appendChild(errorMsg);
+};
 
 // Round price to 2 decimals if floating number
 const formatPrice = (price) =>
   !Number.isInteger(price) ? price.toFixed(2) : price;
 
-// Intersection Observer
-const highlightSections = (entries) => {
-  entries.forEach((entry) => {
-    const section = entry.target.id;
+const updateBagPrice = (price, operation = 'increment') => {
+  operation === 'increment'
+    ? (bagPriceValue += price)
+    : (bagPriceValue -= price);
 
-    const navLink = document.querySelector(
-      `.nav-list li a[href="#${section}"]`
-    );
-
-    // highlight nav items when observing
-    entry.isIntersecting
-      ? navLink.classList.add('highlighted')
-      : navLink.classList.remove('highlighted');
-  });
+  bagPrice.textContent = `${formatPrice(bagPriceValue)}€`;
 };
 
-const sectionObserver = new IntersectionObserver(highlightSections, {
-  root: null,
-  threshold: 0.9,
-});
+const updateBagCount = (quantity, operation = 'increment') => {
+  operation === 'increment'
+    ? (totalItems += quantity)
+    : (totalItems -= quantity);
 
-allSections.forEach((section) => sectionObserver.observe(section));
-
-// Recipes
-const burgers = {
-  'Cheese burger': newCheeseBurger,
-  'Vegetarian burger': newVegetarianBurger,
-  'Chicken burger': newChickenBurger,
+  bagCount.textContent = bagCountValue = totalItems;
 };
 
-const generateIngredient = (ingredient) => {
-  // Generate ingredient HTML
-  return `
-    <li class="ingredient-container">
-      <img class="ingredient-img" src="img/${ingredient}.png" alt="${ingredient}"/>
-      <h5>${ingredient}</h5>
-    </li>
-  `;
-};
-
-// Display recipe function
-const displayRecipe = (burgerName) => {
-  // Select burger
-  const ingredients = burgers[burgerName];
-
-  // Guard clause
-  if (!ingredients) return;
-
-  // Generate recipe HTML content
-  const recipe = Object.keys(ingredients)
-    .map((type) => generateIngredient(ingredients[type]))
-    .join('');
-
-  // Add recipe in modal content
-  modalContent.innerHTML = `
-    <h3 class="product-name">${burgerName} 🍔</h3>
-    <ul class="recipe-container">${recipe}</ul>
-  `;
-
-  // Show modal
-  modal.showModal();
-
-  // Hide when clicking outside modal
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.close();
-  });
-};
-
-// Open modal on click
-productImg.forEach((product) => {
-  product.addEventListener('click', () => {
-    // Target burger name
-    const burgerName = product.previousElementSibling.textContent;
-
-    // Display recipe
-    displayRecipe(burgerName);
-  });
-});
-
-// Close modals
-closeModalBtn.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    modal.close();
-    orderReceipt.close();
-  });
-});
-
-// ! BAG INTERACTION
-
-// Update bag function
-const updateBag = (quantity, name, price) => {
+const updateBagList = (quantity, name, price) => {
   price = formatPrice(price);
 
-  // Insert div for each ordered product
   bagProductsList.insertAdjacentHTML(
     'beforeend',
     `<li class="product-item" data-product-name="${name}">
@@ -229,114 +143,149 @@ const updateBag = (quantity, name, price) => {
   );
 };
 
-const updateBagPrice = (price, operation = 'increment') => {
-  operation === 'increment' ? (bagPrice += price) : (bagPrice -= price);
-  bagPriceEl.textContent = `${formatPrice(bagPrice)}€`;
-};
-const updateBagCount = (quantity, operation = 'increment') => {
-  operation === 'increment'
-    ? (totalItems += quantity)
-    : (totalItems -= quantity);
-  bagCount.textContent = totalItems;
+const deleteBagItem = (item, totalProductPrice, quantity) => {
+  item.remove();
+
+  updateBagPrice(totalProductPrice, 'decrement');
+  updateBagCount(quantity, 'decrement');
+
+  if (bagCountValue === 0) {
+    bagBtn.classList.remove('focus');
+    hideEl(bagCount);
+    hideEl(bagContainer);
+  }
 };
 
-// Order btn
+const displayLoadingMsg = (state, text, container) => {
+  if (state) {
+    text.textContent = 'Retrieving your position...';
+    container.appendChild(text);
+  } else {
+    text.style.display = 'none';
+  }
+};
+
+// ! OBSERVER
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const navLink = document.querySelector(
+        `.nav-list li a[href="#${entry.target.id}"]`
+      );
+
+      entry.isIntersecting
+        ? navLink.classList.add('highlighted')
+        : navLink.classList.remove('highlighted');
+    });
+  },
+  { root: null, threshold: 0.9 }
+);
+
+allSections.forEach((section) => sectionObserver.observe(section));
+
+// ! MODAL FUNCTIONALITY
+const generateIngredient = (ingredient) => `
+  <li class="ingredient-container">
+    <img class="ingredient-img" src="img/${ingredient}.png" alt="${ingredient}"/>
+    <h5>${ingredient}</h5>
+  </li>
+`;
+
+const displayRecipe = (burgerName) => {
+  const ingredients = burgers[burgerName];
+  if (!ingredients) return;
+
+  const recipe = Object.values(ingredients).map(generateIngredient).join('');
+
+  modalContent.innerHTML = `
+    <h3 class="product-name">${burgerName} 🍔</h3>
+    <ul class="recipe-container">${recipe}</ul>
+  `;
+
+  modal.showModal();
+
+  // Hide when clicking outside modal
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.close();
+  });
+};
+
+// ! EVENT LISTENERS
+
+// Display receipe when clicking on burger image
+productImg.forEach((product) => {
+  product.addEventListener('click', () => {
+    const burgerName = product.previousElementSibling.textContent;
+    displayRecipe(burgerName);
+  });
+});
+
+closeModalBtn.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    modal.close();
+    orderReceipt.close();
+  });
+});
+
+bagBtn.addEventListener('click', () => {
+  bagCountValue > 0 && bagContainer.classList.toggle('opacity-zero');
+});
+
 orderBtn.forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
+
     const container = btn.closest('.product-container');
     const name = container.querySelector('.product-name').textContent;
     const price = container.querySelector('.price').textContent;
-    const input = container.querySelector('.product-quantity-input');
-    const quantity = Number(input.value);
-    const totalProductPrice = Number(price * quantity);
+    const itemQuantityInput = container.querySelector(
+      '.product-quantity-input'
+    );
+    const itemQuantity = Number(itemQuantityInput.value);
+    const totalProductPrice = Number(price * itemQuantity);
 
-    // Check if input quantity is valid
-    if (!isNaN(quantity) && quantity > 0) {
+    if (itemQuantity > 0) {
+      updateBagCount(itemQuantity, 'increment');
+      updateBagPrice(totalProductPrice, 'increment');
+      updateBagList(itemQuantity, name, totalProductPrice);
       showEl(bagContainer);
       showEl(bagCount);
+      if (bagCountValue > 0) bagBtn.classList.add('focus');
 
-      // Increment bag count
-      updateBagCount(quantity, 'increment');
-
-      // Highlight bag btn when ordering
-      if (bagCount.textContent > 0) bagBtn.classList.add('focus');
-
-      // Update bag content && bag price
-      updateBag(quantity, name, totalProductPrice);
-      updateBagPrice(totalProductPrice, 'increment');
-
-      // Delete items //////////////////////////////////
       const deleteBtn = bagContent.querySelector(
         `[data-product-name="${name}"] .delete-item`
       );
+      const item = deleteBtn.closest('.product-item');
 
-      // Delete product item on click
-      deleteBtn.addEventListener('click', () => {
-        // Remove product && bag price
-        deleteBtn.closest('.product-item').remove();
-        updateBagPrice(totalProductPrice, 'decrement');
+      deleteBtn.addEventListener('click', () =>
+        deleteBagItem(item, totalProductPrice, itemQuantity)
+      );
 
-        // Decrement bag count in DOM
-        updateBagCount(quantity, 'decrement');
-
-        // Hide bag when empty
-        if (Number(bagCount.textContent) === 0) {
-          bagBtn.classList.remove('focus');
-          hideEl(bagCount);
-          hideEl(bagContainer);
-        }
-      });
-
-      // Reset the input value
-      input.value = '';
+      itemQuantityInput.value = '';
     } else {
       alert('Please enter a valid quantity');
     }
   });
 });
 
-// Hide bag btn on click
-bagBtn.addEventListener('click', () => {
-  bagCount.textContent > 0 && bagContainer.classList.toggle('opacity-zero');
-});
-
 // Display order receipt
 finalizeBtn.addEventListener('click', async () => {
-  // Reitinialize errorMsg
-  errorMsg.textContent === '';
-
   try {
-    const now = new Date();
-    const date = now.toLocaleDateString();
-    const time = now.toLocaleTimeString('default', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    const location = await whereAmI();
+    const locationText = location ? `in <strong>${location}</strong>` : '';
 
-    // Get location
-    const city = await whereAmI();
+    receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong> ${locationText}`;
 
-    // Display order recept
-    if (!city) {
-      receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong>`;
-
-      // Display error position msg
-      errorMsg.textContent = '⚠️ Failed to retrieve your location';
-      receiptContainer.appendChild(errorMsg);
-    } else {
-      receiptDate.innerHTML = `✔️ Order placed on: <strong>${date}</strong> at <strong>${time}</strong> in <strong>${city}</strong>`;
+    if (!location) {
+      createErrorMsg('⚠️ Failed to retrieve your location', receiptContainer);
     }
 
-    receiptTotalPrice.innerHTML = `Total: <strong>${bagPriceEl.textContent}</strong>`;
+    receiptTotalPrice.innerHTML = `Total: <strong>${bagPriceValue.toFixed(
+      2
+    )}€</strong>`;
 
-    creditCard.innerHTML = `
-    <ion-icon name="card-outline"></ion-icon>
-    <ion-icon name="logo-paypal"></ion-icon>
-    <ion-icon name="id-card-outline"></ion-icon>
-   `;
+    console.log(bagPriceValue);
 
-    // Show modal
     orderReceipt.showModal();
   } catch (error) {
     receiptDate.innerHTML = `Error: ${error.message}`;
@@ -348,18 +297,17 @@ function getPosition() {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       (position) => resolve(position),
-      (err) => reject(err)
+      (err) => reject(err),
+      { enableHighAccuracy: true }
     );
-
-    navigator.geolocation.getCurrentPosition(resolve, reject, {
-      enableHighAccuracy: true,
-    });
   });
 }
 
 const whereAmI = async () => {
-  loading = true;
-  displayLoadingMsg();
+  let loading = true;
+  const loadingText = document.createElement('p');
+  loadingText.className = 'loading-msg';
+  displayLoadingMsg(loading, loadingText, bagContainer);
 
   try {
     const position = await getPosition();
@@ -379,13 +327,12 @@ const whereAmI = async () => {
     );
 
     const data = await response.json();
-    // console.log(data);
+
+    loading = false;
+    displayLoadingMsg(loading, loadingText, bagContainer);
 
     return data.results[0].country;
   } catch (error) {
     console.log(error);
-  } finally {
-    loading = false;
-    displayLoadingMsg();
   }
 };
