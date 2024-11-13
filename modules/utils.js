@@ -5,8 +5,8 @@ export const hideEl = (el, property) => el.classList.add(property);
 
 export const showBagUI = () => {
   showEl(bagCount, 'opacity-zero');
-  showEl(bagContainer, 'opacity-zero');
-  bagBtn.classList.add('focus');
+  bagBtn.classList.toggle('focus'); // Highlight
+  bagContainer.classList.toggle('opacity-zero');
 };
 
 export const hideBagUI = () => {

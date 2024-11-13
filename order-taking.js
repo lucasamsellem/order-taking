@@ -64,7 +64,7 @@ allSections.forEach((section) => sectionObserver.observe(section));
 // ! EVENT LISTENERS
 // Toggle bag when clicking on bag icon
 bagBtn.addEventListener('click', () => {
-  bagCountValue > 0 && bagContainer.classList.toggle('opacity-zero');
+  if (bagCountValue) showBagUI();
 });
 
 // Display receipe when clicking on burger image
@@ -100,10 +100,10 @@ orderBtn.forEach((btn) => {
     );
     const productTotalPrice = Number(price * itemQuantity);
 
+    bagCount.classList.remove('opacity-zero');
     updateBagCount(itemQuantity, 'increment');
     updateBagPrice(productTotalPrice, 'increment');
     updateBagList(itemQuantity, productName, productTotalPrice);
-    bagCountValue > 0 && showBagUI();
 
     setDeleteBtn(productName, productTotalPrice, itemQuantity);
   });
@@ -114,7 +114,7 @@ finalizeBtn.addEventListener('click', async () => {
   try {
     const location = await whereAmI();
     const locationText = location ? `in <strong>${location}</strong>` : '';
-    !location && showEl(errorMsg, 'hidden');
+    if (!location) showEl(errorMsg, 'hidden');
 
     receipt.innerHTML = generateReceiptText(
       todayDate,
