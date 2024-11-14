@@ -67,7 +67,6 @@ const sectionObserver = new IntersectionObserver(
 allSections.forEach((section) => sectionObserver.observe(section));
 
 // ! EVENT LISTENERS
-// Toggle bag when clicking on bag icon
 bagBtn.addEventListener('click', () => {
   if (bagCountValue) showBagUI();
 });
@@ -104,7 +103,6 @@ orderBtn.forEach((btn) => {
     );
     const productTotalPrice = Number(price * itemQuantity);
 
-    // CSS
     removeCSSProperty(bagCount, 'opacity-zero');
     scaleUpDown(bagBtn);
 
@@ -120,7 +118,7 @@ finalizeBtn.addEventListener('click', async () => {
   try {
     const location = await whereAmI();
     const locationText = location ? `in <strong>${location}</strong>` : '';
-    if (!location) addCSSProperty(errorMsg, 'hidden');
+    if (!location) removeCSSProperty(errorMsg, 'hidden');
 
     receipt.innerHTML = generateReceiptText(
       todayDate,
