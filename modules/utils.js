@@ -1,18 +1,28 @@
 import { bagBtn, bagCount, bagContainer } from '../order-taking.js';
 
-export const showEl = (el, property) => el.classList.remove(property);
-export const hideEl = (el, property) => el.classList.add(property);
+export const addCSSProperty = (el, property) => el.classList.add(property);
+
+export const removeCSSProperty = (el, property) =>
+  el.classList.remove(property);
+
+export const toggleCSSProperty = (el, property) =>
+  el.classList.toggle(property);
+
+export const scaleUpDown = (el) => {
+  removeCSSProperty(el, 'scale-up');
+  setTimeout(() => addCSSProperty(el, 'scale-up'), 10);
+};
 
 export const showBagUI = () => {
-  showEl(bagCount, 'opacity-zero');
-  bagBtn.classList.toggle('focus'); // Highlight
-  bagContainer.classList.toggle('opacity-zero');
+  removeCSSProperty(bagCount, 'opacity-zero');
+  toggleCSSProperty(bagBtn, 'focus');
+  toggleCSSProperty(bagContainer, 'opacity-zero');
 };
 
 export const hideBagUI = () => {
-  hideEl(bagCount, 'opacity-zero');
-  hideEl(bagContainer, 'opacity-zero');
-  bagBtn.classList.remove('focus');
+  addCSSProperty(bagCount, 'opacity-zero');
+  addCSSProperty(bagContainer, 'opacity-zero');
+  removeCSSProperty(bagBtn, 'focus');
 };
 
 export const formatPrice = (price) =>

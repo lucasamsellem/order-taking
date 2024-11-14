@@ -1,4 +1,9 @@
-import { showEl, showBagUI } from './modules/utils.js';
+import {
+  addCSSProperty,
+  showBagUI,
+  scaleUpDown,
+  removeCSSProperty,
+} from './modules/utils.js';
 import { whereAmI } from './modules/getPosition.js';
 import { displayRecipe } from './modules/receipe/displayRecipe.js';
 import { updateBagList } from './modules/bag/updateBagList.js';
@@ -52,8 +57,8 @@ const sectionObserver = new IntersectionObserver(
       );
 
       entry.isIntersecting
-        ? navLink.classList.add('highlighted')
-        : navLink.classList.remove('highlighted');
+        ? addCSSProperty(navLink, 'highlighted')
+        : removeCSSProperty(navLink, 'highlighted');
     });
   },
   { root: null, threshold: 0.9 }
@@ -92,7 +97,6 @@ orderBtn.forEach((btn) => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
     const container = btn.closest('.product-container');
-
     const productName = container.querySelector('.product-name').textContent;
     const price = container.querySelector('.price').textContent;
     const itemQuantity = Number(
@@ -100,11 +104,13 @@ orderBtn.forEach((btn) => {
     );
     const productTotalPrice = Number(price * itemQuantity);
 
-    bagCount.classList.remove('opacity-zero');
+    // CSS
+    removeCSSProperty(bagCount, 'opacity-zero');
+    scaleUpDown(bagBtn);
+
     updateBagCount(itemQuantity, 'increment');
     updateBagPrice(productTotalPrice, 'increment');
     updateBagList(itemQuantity, productName, productTotalPrice);
-
     setDeleteBtn(productName, productTotalPrice, itemQuantity);
   });
 });
@@ -114,7 +120,7 @@ finalizeBtn.addEventListener('click', async () => {
   try {
     const location = await whereAmI();
     const locationText = location ? `in <strong>${location}</strong>` : '';
-    if (!location) showEl(errorMsg, 'hidden');
+    if (!location) addCSSProperty(errorMsg, 'hidden');
 
     receipt.innerHTML = generateReceiptText(
       todayDate,

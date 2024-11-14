@@ -1,5 +1,5 @@
 import { loadingMsg } from '../order-taking.js';
-import { showEl, hideEl } from './utils.js';
+import { removeCSSProperty, addCSSProperty } from './utils.js';
 
 // Get current location with reverse geocoding
 const getPosition = () =>
@@ -11,7 +11,7 @@ const getPosition = () =>
   });
 
 export const whereAmI = async () => {
-  showEl(loadingMsg, 'hidden');
+  removeCSSProperty(loadingMsg, 'hidden');
 
   try {
     const position = await getPosition();
@@ -33,6 +33,6 @@ export const whereAmI = async () => {
   } catch (error) {
     console.log(error);
   } finally {
-    hideEl(loadingMsg, 'hidden');
+    addCSSProperty(loadingMsg, 'hidden');
   }
 };

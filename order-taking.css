@@ -49,7 +49,6 @@ body {
   opacity: 0.9;
 }
 
-.header-right-side,
 .header-left-side {
   display: flex;
   align-items: center;
@@ -90,6 +89,10 @@ ul li {
   font-size: 1.6rem;
   font-weight: 600;
   gap: 3.2rem;
+}
+
+nav {
+  margin-left: auto;
 }
 
 .nav-list a {
@@ -385,6 +388,11 @@ footer {
 .github-link ion-icon {
   font-size: 4.4rem;
   color: white;
+  transition: all 0.2s;
+}
+
+.github-link ion-icon:active {
+  transform: scale(0.9);
 }
 
 /* DYNAMIC */
@@ -409,6 +417,20 @@ footer {
 
 .highlighted {
   background-color: #fab005;
+}
+
+.scale-up {
+  animation: scaleUpDown 0.4s ease-in-out;
+}
+
+@keyframes scaleUpDown {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .loading-msg {
@@ -446,6 +468,10 @@ footer {
 
   .logo {
     height: 2.4rem;
+  }
+
+  nav {
+    margin-left: unset;
   }
 
   .nav-list {

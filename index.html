@@ -37,20 +37,18 @@
         <h1>Burger delivery</h1>
       </div>
 
-      <div class="header-right-side">
-        <nav>
-          <ul class="nav-list">
-            <li><a href="#burgers">Burgers</a></li>
-            <li><a href="#snacks">Snacks</a></li>
-            <li><a href="#drinks">Drinks</a></li>
-          </ul>
-        </nav>
+      <nav>
+        <ul class="nav-list">
+          <li><a href="#burgers">Burgers</a></li>
+          <li><a href="#snacks">Snacks</a></li>
+          <li><a href="#drinks">Drinks</a></li>
+        </ul>
+      </nav>
 
-        <button class="bag-btn">
-          <ion-icon name="bag-outline" class="bag-icon"></ion-icon>
-          <span class="bag-count opacity-zero"></span>
-        </button>
-      </div>
+      <button class="bag-btn">
+        <ion-icon name="bag-outline" class="bag-icon"></ion-icon>
+        <span class="bag-count opacity-zero"></span>
+      </button>
 
       <div class="bag-container opacity-zero">
         <div class="bag-content">
@@ -58,9 +56,7 @@
         </div>
 
         <div class="bag-price"></div>
-
         <button class="finalize-btn">Finalize order</button>
-
         <p class="loading-msg hidden">Retrieving your position...</p>
       </div>
     </header>
@@ -76,7 +72,7 @@
             <img
               src="img/cheese-burger.webp"
               class="product-img burger-img"
-              alt="cheese-burger"
+              alt="Cheese burger image"
             />
 
             <h4><span class="price">5.90</span>€</h4>
@@ -100,7 +96,7 @@
             <img
               src="img/veggie-burger.webp"
               class="product-img burger-img"
-              alt="cheese-burger"
+              alt="Vegetarian burger image"
             />
 
             <h4><span class="price">6.50</span>€</h4>
@@ -124,7 +120,7 @@
             <img
               src="img/chicken-burger.webp"
               class="product-img burger-img"
-              alt="cheese-burger"
+              alt="Chicken burger image"
             />
             <h4><span class="price">7</span>€</h4>
 
@@ -154,7 +150,7 @@
             <img
               src="img/French fries.webp"
               class="product-img"
-              alt="cheese-burger"
+              alt="French fries image"
             />
 
             <h4><span class="price">3.90</span>€</h4>
@@ -178,7 +174,7 @@
             <img
               src="img/onion-rings.webp"
               class="product-img"
-              alt="cheese-burger"
+              alt="Onion rings image"
             />
             <h4><span class="price">3.50</span>€</h4>
 
@@ -201,7 +197,7 @@
             <img
               src="img/nuggets.webp"
               class="product-img"
-              alt="cheese-burger"
+              alt="Nuggets image"
             />
             <h4><span class="price">4.50</span>€</h4>
 
@@ -228,7 +224,11 @@
         <div class="col-3">
           <div class="product-container drink-container">
             <h3 class="product-name">Coke</h3>
-            <img src="img/coke.webp" class="product-img" alt="cheese-burger" />
+            <img
+              src="img/coke.webp"
+              class="product-img"
+              alt="Coke soda image"
+            />
             <h4><span class="price">1</span>€</h4>
 
             <form name="product-quantity" class="order-container">
@@ -250,7 +250,7 @@
             <img
               src="img/ice-tea.webp"
               class="product-img"
-              alt="cheese-burger"
+              alt="Ice tea soda image"
             />
             <h4><span class="price">1.50</span>€</h4>
 
@@ -273,7 +273,7 @@
             <img
               src="img/sprite.webp"
               class="product-img"
-              alt="cheese-burger"
+              alt="Sprite soda image"
             />
 
             <h4><span class="price">1.50</span>€</h4>
@@ -317,12 +317,16 @@
     </main>
 
     <footer>
-      <p>For your health, eat at least five fruits and vegetables a day.</p>
-      <div class="github-link">
-        <a href="https://github.com/lucasamsellem" target="_blank"
-          ><ion-icon name="logo-github"></ion-icon
-        ></a>
-      </div>
+      <article>
+        For your health, eat at least five fruits and vegetables a day.
+      </article>
+
+      <a
+        href="https://github.com/lucasamsellem"
+        target="_blank"
+        class="github-link"
+        ><ion-icon name="logo-github"></ion-icon
+      ></a>
     </footer>
   </body>
 </html>
