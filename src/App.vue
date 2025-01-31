@@ -23,7 +23,7 @@ const handleAddToBag = (product: ProductType) => {
 <template>
   <Header :bag="bag" />
 
-  <main class="max-w-[75rem] mx-auto px-[3.2rem]">
+  <main class="max-w-[75rem] mx-auto px-[2.8rem]">
     <ProductCategory
       v-for="category in menu"
       :key="category.category"

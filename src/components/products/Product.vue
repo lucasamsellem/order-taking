@@ -47,7 +47,7 @@ const openRecipeModal = () => recipe.value && openModal(modalRef.value);
       </figcaption>
       <button @click="openRecipeModal" :class="`${recipe ? 'cursor-pointer' : ''}`">
         <img
-          class="max-h-[10rem] max-w-[90%] shadow-animation transition-all duration-200"
+          class="max-h-[10rem] shadow-animation transition-all duration-200"
           :src="`images/${type}/${formatImgPath(name)}.webp`"
           :alt="`${name} image`"
         />
