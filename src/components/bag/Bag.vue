@@ -33,7 +33,7 @@ const confirmOrder = async () => {
   try {
     isLoading.value = true;
     modalRef.value?.openReceiptModal();
-    location.value = await whereAmI();
+    location.value = (await whereAmI()) ?? '';
   } catch (error) {
     console.log(error);
   } finally {
