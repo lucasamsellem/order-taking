@@ -48,7 +48,7 @@ const openRecipeModal = () => recipe.value && openModal(modalRef.value);
       <button @click="openRecipeModal" :class="`${recipe ? 'cursor-pointer' : ''}`">
         <img
           class="max-h-[10rem] max-w-[90%] shadow-animation transition-all duration-200"
-          :src="`/images/${type}/${formatImgPath(name)}.webp`"
+          :src="`images/${type}/${formatImgPath(name)}.webp`"
           :alt="`${name} image`"
         />
       </button>
@@ -66,7 +66,7 @@ const openRecipeModal = () => recipe.value && openModal(modalRef.value);
             <figure class="grid justify-items-center gap-6 max-w-[18rem]">
               <img
                 class="max-h-[6rem] shadow-animation transition-all duration-200"
-                :src="`/images/ingredients/${formatImgPath(ingredient)}.webp`"
+                :src="`images/ingredients/${formatImgPath(ingredient)}.webp`"
                 :alt="`${ingredient} image`"
               />
               <figcaption class="text-[1.2rem] text-gray-600">
