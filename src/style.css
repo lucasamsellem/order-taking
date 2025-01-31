@@ -40,6 +40,21 @@ nav ul li a:hover {
   background-color: orange;
 }
 
+dialog {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  translate: calc(calc(1 / 2 * 100%) * -1);
+  transform: translateY(-50%);
+  z-index: 999;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+dialog > div {
+  padding: 4rem 2rem 2rem 2rem;
+}
+
 /* ANIMATIONS */
 .shadow-animation:hover {
   transform: translateY(-5px);

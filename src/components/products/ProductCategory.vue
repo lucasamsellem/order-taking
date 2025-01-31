@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <section class="my-[10rem] max-[800px]:scroll-mt-20 max-[800px]:my-[6rem]" :id="id">
+  <section class="my-[10rem] scroll-mt-20 max-[800px]:my-[6rem]" :id="id">
     <h2 class="border-b-1 pb-4 font-bold text-4xl mb-10">
       {{ category }}
     </h2>

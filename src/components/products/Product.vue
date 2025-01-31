@@ -11,9 +11,9 @@ const props = defineProps<{
   price: number;
 }>();
 
-// Add selected products to bag
 const productQuantity = ref(1);
-const emit = defineEmits(['addToBag']);
+const emit = defineEmits(['addToBag', 'triggerBagAnimation']);
+
 const addProductToBag = () => {
   if (productQuantity.value <= 0) {
     productQuantity.value = 1;
@@ -23,10 +23,10 @@ const addProductToBag = () => {
       price: props.price,
       quantity: productQuantity.value,
     });
+    emit('triggerBagAnimation');
   }
 };
 
-// Display product recipe
 const recipe = computed(() => {
   return (
     menus.flatMap((menu) => menu.products).find((product) => product.name === props.name)?.recipe ||
@@ -55,9 +55,9 @@ const openRecipeModal = () => recipe.value && openModal(modalRef.value);
     </figure>
 
     <dialog
-      @click="(e) => closeOnOutsideClick(e, modalRef)"
       ref="modalRef"
-      class="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[999] border-none rounded-lg w-[80vw] shadow-lg max-[800px]:h-[80vh]"
+      @click="(e) => closeOnOutsideClick(e, modalRef)"
+      class="w-[80vw] max-[800px]:h-[80vh]"
     >
       <CloseBtn @click="closeModal(modalRef)" class="text-[1.6rem] p-[0.4rem] text-zinc-600" />
       <div class="p-8 text-2xl rounded-lg leading-6 text-center">

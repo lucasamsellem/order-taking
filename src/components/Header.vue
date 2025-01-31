@@ -3,28 +3,19 @@ import logo from '/images/logo.svg';
 import type { ProductType } from '../types/Product';
 import Bag from './bag/Bag.vue';
 import useToggle from '../composables/useToggle';
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   bag: ProductType[];
+  bagAnimationClass: string;
 }>();
 
 const { state: isBagActive, toggle: toggleBag } = useToggle();
+
 const hasItemsInBag = computed(() => props.bag.length > 0);
 const itemsQuantityInBag = computed(() =>
   props.bag.reduce((total, item) => total + item.quantity, 0)
 );
-
-// Bag animation
-const bagAnimationClass = ref('');
-watch(props.bag, () => {
-  bagAnimationClass.value = 'scale-up-down';
-
-  // Removes class right after
-  setTimeout(() => {
-    bagAnimationClass.value = '';
-  }, 400);
-});
 </script>
 
 <template>
@@ -46,21 +37,21 @@ watch(props.bag, () => {
       </Transition>
     </nav>
 
-    <Transition name="fade">
-      <button
-        @click="toggleBag"
-        :class="`relative flex ml-10 text-3xl max-[800px]:text-[1.7rem] cursor-pointer max-[800px]:ml-0 ${bagAnimationClass} ${
-          isBagActive && hasItemsInBag ? 'text-[orange]' : ''
-        } `"
-      >
-        <ion-icon name="bag-outline" />
+    <button
+      @click="toggleBag"
+      :class="`relative flex ml-10 text-3xl max-[800px]:text-[1.7rem] cursor-pointer max-[800px]:ml-0 transition-all duration-200 ${bagAnimationClass} ${
+        isBagActive && hasItemsInBag ? 'text-[orange]' : ''
+      } `"
+    >
+      <ion-icon name="bag-outline" />
+      <Transition name="fade">
         <span
           v-if="hasItemsInBag"
           class="absolute text-sm max-[800px]:text-[0.8rem] bottom-3 left-4 max-[800px]:left-3 max-[800px]:bottom-[0.6rem] bg-red-500 text-white px-[0.5em] py-[0.06em] rounded-full transition-all duration-200 ease-in-out"
           >{{ itemsQuantityInBag }}</span
         >
-      </button>
-    </Transition>
+      </Transition>
+    </button>
 
     <Bag :bag="bag" :isBagActive="isBagActive" :toggleBag="toggleBag" />
   </header>

@@ -29,16 +29,16 @@ const time = new Date().toLocaleTimeString('default', {
 
 <template>
   <dialog
-    @click="(e) => closeOnOutsideClick(e, modalRef)"
     ref="modalRef"
-    class="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[999] rounded-lg shadow-lg max-[800px]:w-[85vw]"
+    @click="(e) => closeOnOutsideClick(e, modalRef)"
+    :class="`${isLoading ? 'bg-transparent overflow-hidden' : ''} max-[800px]:w-[85vw]`"
   >
-    <CloseBtn @click="closeModal(modalRef)" class="text-[1.6rem] p-[0.4rem] text-zinc-600" />
-    <div class="p-8 text-xl text-center font-[400]">
-      <p v-if="isLoading" class="flex justify-center">
-        <Loader />
-      </p>
-      <div v-else class="space-y-10">
+    <p v-if="isLoading" class="flex justify-center">
+      <Loader />
+    </p>
+    <div v-else class="text-xl text-center font-[400]">
+      <CloseBtn @click="closeModal(modalRef)" class="text-[1.6rem] p-[0.4rem] text-zinc-600" />
+      <div class="space-y-10">
         <p>
           ✔️ Order placed on: <strong>{{ date }}</strong> at <strong>{{ time }}</strong>
           <span v-if="location">

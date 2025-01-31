@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import type { ProductType } from '../../types/Product';
 import { roundToTwo } from '../../utils/roundToTwo';
-import CloseBtn from '../buttons/CloseBtn.vue';
+import { default as DeleteBtn } from '../buttons/CloseBtn.vue';
 import ReceiptModal from './ReceiptModal.vue';
 import { whereAmI } from '../../api/getPosition';
 
@@ -54,7 +54,10 @@ const confirmOrder = async () => {
           v-for="({ name, price, quantity }, index) in bag"
           class="grid grid-cols-[auto_1rem_1fr_auto] gap-x-5 justify-items-start"
         >
-          <CloseBtn @click="removeItemFromBag(index)" class="bg-red-500 rounded-full px-[0.17em]" />
+          <DeleteBtn
+            @click="removeItemFromBag(index)"
+            class="static bg-red-500 rounded-full px-[0.17em]"
+          />
           <span class="text-zinc-500">{{ quantity }}x</span>
           <span class="font-semibold">{{ name }}</span>
           <span class="text-zinc-500">{{ price }}€</span>
