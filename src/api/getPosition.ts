@@ -1,13 +1,19 @@
-// Get current location with reverse geocoding
-const getPosition = () =>
+type Position = {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+};
+
+const getPosition = (): Promise<Position> =>
   new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
-      (position) => resolve(position),
+      (position: Position) => resolve(position),
       (err) => reject(err)
     );
   });
 
-export const whereAmI = async () => {
+export const whereAmI = async (): Promise<string | undefined> => {
   try {
     const position = await getPosition();
     const { latitude, longitude } = position.coords;
@@ -24,7 +30,7 @@ export const whereAmI = async () => {
     );
 
     const data = await res.json();
-    return data.features[0].properties.city;
+    return data.features[0]?.properties.city;
   } catch (error) {
     console.log(error);
   }
